@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ramadan Distributions ERD</title>
+
+<style>
+
+body{
+    font-family: Arial;
+    background:#f4f6f9;
+    text-align:center;
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:40px;
+    margin-top:40px;
+}
+
+.table{
+    background:white;
+    border:2px solid #2c3e50;
+    border-radius:10px;
+    width:220px;
+    padding:10px;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.table h3{
+    background:#2c3e50;
+    color:white;
+    padding:8px;
+    border-radius:6px;
+    font-size:16px;
+}
+
+.table p{
+    text-align:left;
+    font-size:14px;
+    margin:3px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<h1>Ramadan Distributions Database ERD</h1>
+
+<div class="container">
+
+<div class="table">
+<h3>Warehouses</h3>
+<p>warehouse_id (PK)</p>
+<p>name</p>
+<p>location</p>
+<p>max_capacity</p>
+<p>current_status</p>
+<p>supervisor_id</p>
+</div>
+
+<div class="table">
+<h3>Food_Categories</h3>
+<p>category_id (PK)</p>
+<p>type</p>
+<p>required_storage_temperature</p>
+</div>
+
+<div class="table">
+<h3>Inventory_Items</h3>
+<p>item_id (PK)</p>
+<p>name</p>
+<p>quantity_kg</p>
+<p>expiry_date</p>
+<p>warehouse_id (FK)</p>
+<p>category_id (FK)</p>
+<p>box_type</p>
+</div>
+
+<div class="table">
+<h3>Donations_Log</h3>
+<p>donation_id (PK)</p>
+<p>donor_name</p>
+<p>amount_value</p>
+<p>donation_type</p>
+<p>org_type</p>
+</div>
+
+<div class="table">
+<h3>Users_Master</h3>
+<p>user_id (PK)</p>
+<p>full_name</p>
+<p>gender</p>
+<p>age</p>
+<p>phone</p>
+<p>address</p>
+<p>role</p>
+</div>
+
+<div class="table">
+<h3>Beneficiary_Details</h3>
+<p>beneficiary_id (PK)</p>
+<p>user_id (FK)</p>
+<p>family_members_count</p>
+<p>poverty_score</p>
+<p>last_received_date</p>
+</div>
+
+<div class="table">
+<h3>Volunteer_Skills</h3>
+<p>volunteer_id (FK)</p>
+<p>skill_id (FK)</p>
+<p>years_of_experience</p>
+</div>
+
+<div class="table">
+<h3>Skills</h3>
+<p>skill_id (PK)</p>
+<p>skill_type</p>
+</div>
+
+<div class="table">
+<h3>Training_Sessions</h3>
+<p>session_id (PK)</p>
+<p>session_name</p>
+<p>trainer_name</p>
+<p>session_date</p>
+</div>
+
+<div class="table">
+<h3>Driver_Training</h3>
+<p>driver_id (FK)</p>
+<p>session_id (FK)</p>
+</div>
+
+</div>
+
+</body>
+</html>
