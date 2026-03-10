@@ -11,6 +11,15 @@ body{
     text-align:center;
 }
 
+h1{
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-20px);}
+    100% { opacity: 1; transform: translateY(0);}
+}
+
 .container{
     display:flex;
     flex-wrap:wrap;
@@ -26,6 +35,24 @@ body{
     width:220px;
     padding:10px;
     box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    
+  
+    opacity: 0;
+    transform: scale(0.8);
+    animation: popIn 0.8s forwards;
+    animation-delay: var(--delay);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.8);}
+    100% { opacity: 1; transform: scale(1);}
+}
+
+
+.table:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
 }
 
 .table h3{
@@ -45,14 +72,13 @@ body{
 </style>
 </head>
 
-
 <body>
 
 <h1>Ramadan Distributions Database ERD</h1>
 
 <div class="container">
 
-<div class="table">
+<div class="table" style="--delay:0s">
 <h3>Warehouses</h3>
 <p>warehouse_id (PK)</p>
 <p>name</p>
@@ -62,14 +88,14 @@ body{
 <p>supervisor_id</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.1s">
 <h3>Food_Categories</h3>
 <p>category_id (PK)</p>
 <p>type</p>
 <p>required_storage_temperature</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.2s">
 <h3>Inventory_Items</h3>
 <p>item_id (PK)</p>
 <p>name</p>
@@ -80,7 +106,7 @@ body{
 <p>box_type</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.3s">
 <h3>Donations_Log</h3>
 <p>donation_id (PK)</p>
 <p>donor_name</p>
@@ -89,7 +115,7 @@ body{
 <p>org_type</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.4s">
 <h3>Users_Master</h3>
 <p>user_id (PK)</p>
 <p>full_name</p>
@@ -100,7 +126,7 @@ body{
 <p>role</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.5s">
 <h3>Beneficiary_Details</h3>
 <p>beneficiary_id (PK)</p>
 <p>user_id (FK)</p>
@@ -109,20 +135,20 @@ body{
 <p>last_received_date</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.6s">
 <h3>Volunteer_Skills</h3>
 <p>volunteer_id (FK)</p>
 <p>skill_id (FK)</p>
 <p>years_of_experience</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.7s">
 <h3>Skills</h3>
 <p>skill_id (PK)</p>
 <p>skill_type</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.8s">
 <h3>Training_Sessions</h3>
 <p>session_id (PK)</p>
 <p>session_name</p>
@@ -130,7 +156,7 @@ body{
 <p>session_date</p>
 </div>
 
-<div class="table">
+<div class="table" style="--delay:0.9s">
 <h3>Driver_Training</h3>
 <p>driver_id (FK)</p>
 <p>session_id (FK)</p>
