@@ -117,11 +117,105 @@ CREATE TABLE driver_training (
         ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE vehicle_assignments (
+    vehicle_id INT PRIMARY KEY,
+    driver_id INT,
+    assigned_date DATE,
+    FOREIGN KEY (driver_id) REFERENCES users_master (user_id)
+);
+
+
+-- TRIGGERS
+--------------------------
+
+DELIMITER //
+
+CREATE TRIGGER check_drybox_expiry
+BEFORE INSERT ON inventory_items
+FOR EACH ROW
+BEGIN
+
+    DECLARE food_type VARCHAR(10);
+
+    SELECT storage_type
+    INTO food_type
+    FROM food_categories
+    WHERE category_id = NEW.category_id;
+
+    IF food_type = 'Dry'
+    AND NEW.expiry_date <= CURDATE() + INTERVAL 3 DAY
+    THEN
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Items expiring within 3 days cannot be assigned to Dry Boxes';
+
+    END IF;
+
+END //
+
+DELIMITER ;
+
+
+INSERT INTO inventory_items
+(name, quantity_kg, warehouse_id, category_id, expiry_date)
+VALUES ('Flour', 100, 1, 1, CURDATE() + INTERVAL 2 DAY);
 
 
 
 
 
+DELIMITER / /
+
+CREATE TRIGGER check_15_day_rule
+BEFORE UPDATE ON beneficiary_details
+FOR EACH ROW
+BEGIN
+
+IF NEW.last_received_date < OLD.last_received_date + INTERVAL 15 DAY
+THEN
+
+SIGNAL SQLSTATE '45000'
+SET MESSAGE_TEXT = 'A family cannot receive another box within 15 days';
+
+END IF;
+
+END //
+
+DELIMITER;
+INSERT INTO beneficiary_details (user_id, family_members_count, poverty_score, last_received_date)
+VALUES (1, 4, 8, '2026-03-01');
+
+UPDATE beneficiary_details
+SET last_received_date = '2026-03-10'
+WHERE user_id = 1;
+
+
+
+DELIMITER / /
+
+CREATE TRIGGER check_driver_training
+BEFORE INSERT ON vehicle_assignments
+FOR EACH ROW
+BEGIN
+    DECLARE trained INT;
+
+    SELECT COUNT(*) INTO trained
+    FROM driver_training dt
+    JOIN training_sessions ts ON dt.session_id = ts.session_id
+    WHERE dt.driver_id = NEW.driver_id
+      AND ts.session_name = 'Safety First';
+
+    IF trained = 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Driver must complete "Safety First" training before assignment';
+    END IF;
+
+END //
+
+INSERT INTO vehicle_assignments (vehicle_id, driver_id, assigned_date)
+VALUES (101, 6, CURDATE());
+
+DELIMITER;
 -- Sampel
 -- -----------------------------
 
