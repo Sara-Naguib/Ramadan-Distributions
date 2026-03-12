@@ -18,7 +18,7 @@
 ## Database Design
 
 ### Entity-Relationship Diagram
-[You can see tables and ERD here](https://sara-naguib.github.io/Ramadan-Distributions/)
+[You can see tables clearly here](https://sara-naguib.github.io/Ramadan-Distributions/)
 
 
 ### Design Philosophy
@@ -189,3 +189,6 @@ aws s3 cp /backups/full_$(date +%F).sql s3://ramadan-db-backups/
 #### Layer 4 — Replication (High Availability)
 
 For production, configure a **Primary–Replica** MySQL setup. All writes go to the primary; the replica stays synchronized in real time. If the primary crashes, the replica can be promoted with minimal downtime, and no donor data is lost.
+
+
+
