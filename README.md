@@ -128,7 +128,7 @@ BEGIN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Items expiring within 3 days cannot be assigned to Dry Boxes';
     END IF;
-END //
+END 
 
 ```
 
