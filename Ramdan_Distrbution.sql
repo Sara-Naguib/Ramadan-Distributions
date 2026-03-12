@@ -30,7 +30,6 @@ CREATE TABLE Warehouses (
 );
 
 
-
 CREATE TABLE food_categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
     category_name VARCHAR(50) NOT NULL UNIQUE,
@@ -128,7 +127,7 @@ CREATE TABLE vehicle_assignments (
 -- TRIGGERS
 --------------------------
 
-DELIMITER //
+
 
 CREATE TRIGGER check_drybox_expiry
 BEFORE INSERT ON inventory_items
@@ -151,9 +150,7 @@ BEGIN
 
     END IF;
 
-END //
-
-DELIMITER ;
+END 
 
 
 -- INSERT INTO inventory_items
@@ -164,7 +161,6 @@ DELIMITER ;
 
 
 
-DELIMITER / /
 
 CREATE TRIGGER check_15_day_rule
 BEFORE UPDATE ON beneficiary_details
@@ -179,10 +175,7 @@ SET MESSAGE_TEXT = 'A family cannot receive another box within 15 days';
 
 END IF;
 
-END //
-
-DELIMITER;
-
+END 
 -- INSERT INTO beneficiary_details (user_id, family_members_count, poverty_score, last_received_date)
 -- VALUES (1, 4, 8, '2026-03-01');
 
@@ -191,8 +184,6 @@ DELIMITER;
 -- WHERE user_id = 1;
 
 
-
-DELIMITER / /
 
 CREATE TRIGGER check_driver_training
 BEFORE INSERT ON vehicle_assignments
@@ -211,12 +202,11 @@ BEGIN
         SET MESSAGE_TEXT = 'Driver must complete "Safety First" training before assignment';
     END IF;
 
-END //
+END 
 
 -- INSERT INTO vehicle_assignments (vehicle_id, driver_id, assigned_date)
 -- VALUES (101, 6, CURDATE());
 
-DELIMITER;
 -- Sampel
 -- -----------------------------
 
@@ -346,8 +336,8 @@ WHERE u.address LIKE '%Minya Al-Qamh%'
   AND b.poverty_score > 8
   AND b.last_received_date <= CURDATE() - INTERVAL 15 DAY;
 
-  SELECT  org_type,
- SUM(amount_value) AS total_cash_donations
+SELECT  org_type,
+SUM(amount_value) AS total_cash_donations
 FROM donations_log
 WHERE donation_type = 'Cash'
   AND org_type IN ('Company','Individual')

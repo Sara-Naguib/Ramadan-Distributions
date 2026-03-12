@@ -114,7 +114,7 @@ A trigger is a stored procedure that fires automatically before or after a DML e
 **Trigger: Block dry-box assignment for near-expiry items**
 
 ```sql
-DELIMITER //
+
 CREATE TRIGGER check_drybox_expiry
 BEFORE INSERT ON inventory_items
 FOR EACH ROW
@@ -129,7 +129,7 @@ BEGIN
         SET MESSAGE_TEXT = 'Items expiring within 3 days cannot be assigned to Dry Boxes';
     END IF;
 END //
-DELIMITER ;
+
 ```
 
 - `BEFORE INSERT` fires before the row is written, allowing us to cancel the operation entirely.
