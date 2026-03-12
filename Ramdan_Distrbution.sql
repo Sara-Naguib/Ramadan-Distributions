@@ -156,9 +156,9 @@ END //
 DELIMITER ;
 
 
-INSERT INTO inventory_items
-(name, quantity_kg, warehouse_id, category_id, expiry_date)
-VALUES ('Flour', 100, 1, 1, CURDATE() + INTERVAL 2 DAY);
+-- INSERT INTO inventory_items
+-- (name, quantity_kg, warehouse_id, category_id, expiry_date)
+-- VALUES ('Flour', 100, 1, 1, CURDATE() + INTERVAL 2 DAY);
 
 
 
@@ -182,12 +182,13 @@ END IF;
 END //
 
 DELIMITER;
-INSERT INTO beneficiary_details (user_id, family_members_count, poverty_score, last_received_date)
-VALUES (1, 4, 8, '2026-03-01');
 
-UPDATE beneficiary_details
-SET last_received_date = '2026-03-10'
-WHERE user_id = 1;
+-- INSERT INTO beneficiary_details (user_id, family_members_count, poverty_score, last_received_date)
+-- VALUES (1, 4, 8, '2026-03-01');
+
+-- UPDATE beneficiary_details
+-- SET last_received_date = '2026-03-10'
+-- WHERE user_id = 1;
 
 
 
@@ -212,8 +213,8 @@ BEGIN
 
 END //
 
-INSERT INTO vehicle_assignments (vehicle_id, driver_id, assigned_date)
-VALUES (101, 6, CURDATE());
+-- INSERT INTO vehicle_assignments (vehicle_id, driver_id, assigned_date)
+-- VALUES (101, 6, CURDATE());
 
 DELIMITER;
 -- Sampel
