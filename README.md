@@ -143,3 +143,49 @@ END
 ---
 
 ### 3. Backup & Recovery — Protecting Donor Data from Server Crashes
+
+Donor data is financial and legal evidence. Loss of the `donations_log` table could have serious consequences. A multi-layered backup strategy is essential.
+
+#### Layer 1 — Logical Backups with `mysqldump`
+
+```bash
+# Full daily backup
+mysqldump -u root -p RamadanDistributions donations_log \
+  > /backups/donations_log_$(date +%F).sql
+
+# Automate with cron (runs every night at 2 AM)
+0 2 * * * mysqldump -u root -p RamadanDistributions > /backups/full_$(date +%F).sql
+```
+
+`mysqldump` exports the schema and data as SQL statements. Restoring is as simple as:
+```bash
+mysql -u root -p RamadanDistributions < /backups/donations_log_2026-03-12.sql
+```
+
+#### Layer 2 — Binary Log (Binlog) for Point-in-Time Recovery
+
+Enable MySQL binary logging in `my.cnf`:
+```ini
+[mysqld]
+log_bin = /var/log/mysql/mysql-bin.log
+binlog_format = ROW
+expire_logs_days = 14
+```
+
+Binary logs record every change to the database. If the server crashes at 3:47 PM, you can restore last night's full backup, then replay all binlog events up to 3:46 PM — recovering nearly everything.
+
+```bash
+mysqlbinlog /var/log/mysql/mysql-bin.000001 | mysql -u root -p RamadanDistributions
+```
+
+#### Layer 3 — Offsite / Cloud Backup
+
+Copy backup files to a remote location (AWS S3, Google Cloud Storage, or a secondary server) so that physical hardware failure doesn't destroy both the live database and the backup:
+
+```bash
+aws s3 cp /backups/full_$(date +%F).sql s3://ramadan-db-backups/
+```
+
+#### Layer 4 — Replication (High Availability)
+
+For production, configure a **Primary–Replica** MySQL setup. All writes go to the primary; the replica stays synchronized in real time. If the primary crashes, the replica can be promoted with minimal downtime, and no donor data is lost.
